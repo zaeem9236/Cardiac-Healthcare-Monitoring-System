@@ -6,14 +6,14 @@ import LoginScreenTemplate from '../Components/LoginScreenTemplate';
 
 
 
-export default function LoginPage(){
+export default function LoginPage({navigation}){
 //   props.navigation.setOptions({ tabBarVisible: false })
   
   
     return(
         <View>
             {/* <Text>LoginPage</Text> */}
-            <LoginScreenTemplate />
+            <LoginScreenTemplate navigation={navigation} />
         </View>
     )
 }

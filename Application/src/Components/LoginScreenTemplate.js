@@ -7,7 +7,7 @@ import { Item, Label, Input, Icon, Button } from 'native-base';
 
 
 
-export default function LoginScreenTemplate() {
+export default function LoginScreenTemplate({ navigation }) {
     let [credentials, setCredentials] = useState({ email: '', password: '' });
     let [keyboardOpen, setKeyboardOpen] = useState(false);
 
@@ -26,7 +26,7 @@ export default function LoginScreenTemplate() {
                     <Text style={Styles.welcomeText}>Welcome</Text>
                     <View style={Styles.registerAccount}>
                         <Text style={Styles.registerText1}>Don't have an account ? </Text>
-                        <TouchableOpacity onPress={() => { alert('register account') }}><Text style={Styles.registerText2}>Register</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => { navigation.navigate('RegisterUser') }}><Text style={Styles.registerText2}>Register</Text></TouchableOpacity>
                     </View>
                 </View>
 
