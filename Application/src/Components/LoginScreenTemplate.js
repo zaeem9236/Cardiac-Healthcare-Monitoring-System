@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, TouchableOpacity, Keyboard, ImageBackground, StatusBar } from 'react-native';
 import { Item, Label, Input, Icon, Button } from 'native-base';
+import SvgIconFunction from '../Functions/SvgIconFunction';
+import * as Animatable from 'react-native-animatable';
 
 
 
@@ -17,9 +19,22 @@ export default function LoginScreenTemplate({ navigation }) {
     }, []);
     return (
         <View style={Styles.mainContainer}>
-            <View style={keyboardOpen === true ? Styles.topViewHide : Styles.topView}>
-                <View><Text>Brand Image</Text></View>
-            </View>
+            <StatusBar
+                animated={true}
+                backgroundColor="#2bae66"
+            />
+            {/* <Animatable.View animation={myAnimations.fadeIn} delay={600} duration={1000} iterationCount={6}> */}
+                <ImageBackground style={keyboardOpen === true ? Styles.topViewHide : Styles.topView} imageStyle={{ borderBottomLeftRadius: 3, borderBottomRightRadius: 3 }} source={require('../Assets/loginBackground.png')} >
+                    <View style={Styles.brandView}>
+                        <SvgIconFunction icon='healthCare' size={'22' * Dimensions.get('window').scale} />
+                        <View><Text style={Styles.brandText}>Helthcare Monitoring System #2bae66</Text></View>
+                    </View>
+                </ImageBackground>
+            {/* </Animatable.View> */}
+
+
+
+
 
             <View style={keyboardOpen !== true ? Styles.bottomView_K0 : Styles.bottomView_K1}>
                 <View style={Styles.welcomeView}>
@@ -31,6 +46,7 @@ export default function LoginScreenTemplate({ navigation }) {
                 </View>
 
                 <View style={Styles.inputFieldsView}>
+
                     <Item floatingLabel style={Styles.inputFieldEmail}>
                         <Label>Email</Label>
                         <Input
@@ -74,28 +90,34 @@ const Styles = StyleSheet.create({
         height: Dimensions.get('window').height
     },
     topView: {
-        backgroundColor: 'purple',
-        height: Dimensions.get('window').height / 3.5,
-        borderBottomStartRadius: 200,
-        borderBottomEndRadius: 200,
-        transform: [{ scale: 1.9 }],
+        height: Dimensions.get('window').height / 2.9,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     topViewHide: {
         display: 'none'
     },
+    brandView: {
+        // backgroundColor: 'red',
+        display: 'flex',
+        alignItems: 'center',
+    },
+    brandText: {
+        color: 'white',
+        paddingTop: 13 * Dimensions.get('window').scale,
+        fontSize: 8 * Dimensions.get('window').scale
+    },
     bottomView_K0: {
         // backgroundColor: 'orange',
         // height: Dimensions.get('window').height / 1.5,
-        transform: [{ translateY: Dimensions.get('window').height / 7, }]
+        transform: [{ translateY: Dimensions.get('window').height / 13, }]
     },
     bottomView_K1: {
         transform: [{ translateY: Dimensions.get('window').height / 25, }]
     },
     welcomeText: {
-        color: 'purple',
+        color: '#2ba366',
         marginLeft: Dimensions.get('window').width * 0.07,
         fontSize: Dimensions.get('window').height * 0.05
     },
@@ -117,10 +139,10 @@ const Styles = StyleSheet.create({
         marginRight: Dimensions.get('window').width * 0.07,
     },
     inputFieldEmail: {
-        borderBottomColor: 'purple'
+        borderBottomColor: '#2bae66'
     },
     inputFieldPass: {
-        borderBottomColor: 'purple',
+        borderBottomColor: '#2bae66',
         marginTop: Dimensions.get('window').height * 0.03,
     },
     inputFieldIcon: {
@@ -134,7 +156,7 @@ const Styles = StyleSheet.create({
     },
     button: {
         width: Dimensions.get('window').width / 2,
-        backgroundColor: 'purple',
+        backgroundColor: '#2bae66',
         // textAlign: 'center'    
         display: 'flex',
         flexDirection: 'row',
@@ -147,5 +169,16 @@ const Styles = StyleSheet.create({
     }
 
 });
+
+const myAnimations = {
+    fadeIn: {
+        0: {
+            opacity: 0,
+        },
+        1: {
+            opacity: 1,
+        }
+    },
+}
 
 
