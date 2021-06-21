@@ -4,13 +4,14 @@ import { StyleSheet, View, Text, Alert, Dimensions, TouchableOpacity, Keyboard, 
 import { Item, Label, Input, Icon, Button } from 'native-base';
 import SvgIconFunction from '../Functions/SvgIconFunction';
 import * as Animatable from 'react-native-animatable';
+import LoginUser from '../Functions/LoginUser';
 
 
 
 
 
 export default function LoginScreenTemplate({ navigation }) {
-    let [credentials, setCredentials] = useState({ email: '', password: '' });
+    let [credentials, setCredentials] = useState({ email: 'babar@gmail.com', password: '123456' });
     let [keyboardOpen, setKeyboardOpen] = useState(false);
 
     useEffect(() => {
@@ -75,7 +76,7 @@ export default function LoginScreenTemplate({ navigation }) {
                 </View>
 
                 <View style={Styles.buttonView}>
-                    <Button onPress={() => alert('login')} style={Styles.button}>
+                    <Button onPress={() => LoginUser(credentials, navigation)} style={Styles.button}>
                         <Text style={Styles.buttonText}>Login</Text>
                     </Button>
                 </View>
