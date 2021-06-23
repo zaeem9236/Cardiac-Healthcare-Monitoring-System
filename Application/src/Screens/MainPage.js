@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+import { StyleSheet, View, Text, Button, Alert, Dimensions, ScrollView, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTabNumber, changeTab } from '../Redux/Slices/TabsSlice';
+import { Footer, FooterTab } from 'native-base';
 
-import Tab1 from '../Screens/Tab1';
-import Tab2 from '../Screens/Tab2';
-import Tab3 from '../Screens/Tab3';
+
+import Tabs from '../NativeBase/Tabs';
 
 
 
@@ -16,10 +16,59 @@ export default function MainPage() {
     let currentTab = useSelector(getTabNumber);
 
     if (currentTab === '1')
-        return (<Tab1 />)
+        return (
+            <View style={Styles.mainContainer}>
+                <ScrollView style={Styles.bodyContainer}>
+                    <Text>1</Text>
+                </ScrollView>
+
+
+                <View style={Styles.footerContainer}>
+                    <Tabs />
+                </View>
+            </View>
+        )
     else if (currentTab === '2')
-        return (<Tab2 />)
+        return (
+            <View style={Styles.mainContainer}>
+                <ScrollView style={Styles.bodyContainer}>
+                    <Text>2</Text>
+                </ScrollView>
+
+
+                <View style={Styles.footerContainer}>
+                    <Tabs />
+                </View>
+            </View>
+        )
     else if (currentTab === '3') {
-        return (<Tab3 />)
+        return (
+            <View style={Styles.mainContainer}>
+                <ScrollView style={Styles.bodyContainer}>
+                    <Text>3</Text>
+                </ScrollView>
+
+
+                <View style={Styles.footerContainer}>
+                    <Tabs />
+                </View>
+            </View>
+        )
     }
 }
+
+const Styles = StyleSheet.create({
+    mainContainer: {
+        display: 'flex',
+        flex: 1
+    },
+    bodyContainer: {
+        display: 'flex',
+        flex: 0.9,
+        backgroundColor: '#F0F8FF'
+    },
+    footerContainer: {
+        display: 'flex',
+        flex: 0.1
+    }
+});
