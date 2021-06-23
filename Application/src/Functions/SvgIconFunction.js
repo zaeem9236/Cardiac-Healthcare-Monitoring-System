@@ -5,6 +5,7 @@ import HealthCare from '../Assets/healthCare.svg';
 import Home from '../Assets/home.svg';
 import List from '../Assets/list.svg';
 import Settings from '../Assets/settings.svg';
+import Temp from '../Assets/tempIcon.svg';
 
 
 export default SvgIconFunction = (props) => {
@@ -30,6 +31,12 @@ export default SvgIconFunction = (props) => {
     return (
       <View>
         <Settings width={props.size} height={props.size} fill="#f2f2f2" />
+      </View>
+    )
+  } else if (props.icon === 'temperature') {
+    return (
+      <View>
+        <Temp width={props.size} height={props.size} fill="#660000" />
       </View>
     )
   }
