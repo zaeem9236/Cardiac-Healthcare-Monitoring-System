@@ -6,6 +6,7 @@ import Home from '../Assets/home.svg';
 import List from '../Assets/list.svg';
 import Settings from '../Assets/settings.svg';
 import Temp from '../Assets/tempIcon.svg';
+import Status from '../Assets/status.svg';
 
 
 export default SvgIconFunction = (props) => {
@@ -37,6 +38,12 @@ export default SvgIconFunction = (props) => {
     return (
       <View>
         <Temp width={props.size} height={props.size} fill="#660000" />
+      </View>
+    )
+  } else if (props.icon === 'status') {
+    return (
+      <View>
+        <Status width={props.size} height={props.size} fill={props.color} />
       </View>
     )
   }
