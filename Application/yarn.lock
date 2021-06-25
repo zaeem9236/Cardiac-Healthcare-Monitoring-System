@@ -6156,6 +6156,13 @@ react-native-svg@^12.1.1:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
 
+react-native-toast-message@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.nlark.com/react-native-toast-message/download/react-native-toast-message-1.4.9.tgz#47f33ac312fe2aee5dbdd4ae14745fa0d354102e"
+  integrity sha1-R/M6wxL+Ku5dvdSuFHRfoNNUEC4=
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-vector-icons@^7.0.0, react-native-vector-icons@^7.1.0:
   version "7.1.0"
   resolved "https://registry.npm.taobao.org/react-native-vector-icons/download/react-native-vector-icons-7.1.0.tgz"

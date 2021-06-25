@@ -9,6 +9,8 @@ import SvgIconFunction from '../Functions/SvgIconFunction';
 
 
 import SlidingElement from '../NativeBase/SlidingElement';
+import Toast from 'react-native-toast-message';
+
 
 
 
@@ -78,7 +80,7 @@ export default function MainPage() {
                 />
                 <View style={Styles.bodyContainer}>
                     <Text>Settings</Text>
-                   
+
                     <View style={Styles.settingView}>
                         {/* <Text>Temperature Alert</Text> */}
                         <SlidingElement minValue={20} maxValue={50} text={'Temperature'} />
@@ -89,6 +91,18 @@ export default function MainPage() {
                         <SlidingElement minValue={5} maxValue={15} text={'Records Samples'} />
                     </View>
                 </View>
+
+                {/* <Button onPress={() => {
+                    Toast.show({
+                        type: 'info',
+                        position: 'top',
+                        text1: 'Hello',
+                        onPress: () => {Toast.hide()}
+                    });
+                }}>
+                    <Text>Check</Text>
+                </Button> */}
+
 
                 <View style={Styles.footerContainer}>
                     <Tabs />
