@@ -6,6 +6,8 @@ import { getTabNumber, changeTab } from '../Redux/Slices/TabsSlice';
 import { Footer, FooterTab } from 'native-base';
 import Tabs from '../NativeBase/Tabs';
 import SvgIconFunction from '../Functions/SvgIconFunction';
+import auth from '@react-native-firebase/auth';
+
 
 
 import SlidingElement from '../NativeBase/SlidingElement';
@@ -14,7 +16,7 @@ import Toast from 'react-native-toast-message';
 
 
 
-export default function MainPage() {
+export default function MainPage({navigation}) {
 
     let currentTab = useSelector(getTabNumber);
 
@@ -79,7 +81,7 @@ export default function MainPage() {
                     backgroundColor="#2bae66"
                 />
                 <View style={Styles.bodyContainer}>
-                    <Text>Settings</Text>
+                    {/* <Text>Settings</Text> */}
 
                     <View style={Styles.settingView}>
                         {/* <Text>Temperature Alert</Text> */}
@@ -90,18 +92,26 @@ export default function MainPage() {
                         {/* <Text>Records Samples</Text> */}
                         <SlidingElement minValue={5} maxValue={15} text={'Records Samples'} />
                     </View>
+
+                    <View style={Styles.settingView}>
+                        <View style={Styles.signoutView}>
+                            <Button style={Styles.signoutButton} onPress={() => {
+                                Toast.show({
+                                    type: 'info',
+                                    position: 'top',
+                                    text1: 'Signout successfully',
+                                    onPress: () => { Toast.hide() }
+                                });
+                                auth().signOut().then(() => { navigation.replace('LoginPage') }).catch(()=>{});
+                            }}>
+                                <Text style={Styles.signoutButtonText}>Signout</Text>
+                            </Button>
+                        </View>
+                    </View>
+
                 </View>
 
-                {/* <Button onPress={() => {
-                    Toast.show({
-                        type: 'info',
-                        position: 'top',
-                        text1: 'Hello',
-                        onPress: () => {Toast.hide()}
-                    });
-                }}>
-                    <Text>Check</Text>
-                </Button> */}
+
 
 
                 <View style={Styles.footerContainer}>
@@ -191,7 +201,32 @@ const Styles = StyleSheet.create({
         borderBottomColor: 'orange',
         // paddingTop: 0.06 * Dimensions.get('screen').height
         // marginTop: 0.06 * Dimensions.get('screen').height
-    }
+    },
+
+    signoutView: {
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignItems: 'center',
+        // backgroundColor: 'purple'
+
+    },
+
+    signoutButton:{
+        backgroundColor: '#ff6666',
+        width: Dimensions.get('screen').width * 0.5,
+        height: Dimensions.get('screen').height * 0.09,
+        borderWidth: 2, borderColor: '#e60000',
+        borderRadius: 5,
+        elevation: 0,
+        justifyContent: 'center',
+    },
+
+    signoutButtonText: {
+        color: '#e60000',
+        fontSize: 10 * Dimensions.get('screen').scale * 1,
+    },
 
 
 });

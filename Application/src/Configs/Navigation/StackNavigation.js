@@ -15,8 +15,8 @@ export default function StackNavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="LoginPage" component={LoginPage}  options={{ headerShown: false}} />
-        <Stack.Screen name="RegisterUser" component={RegisterUser}    options={{ headerShown: false}}   />
-        <Stack.Screen name="MainPage" component={MainPage}    options={{ headerShown: false}}   />
+        <Stack.Screen name="RegisterUser" component={RegisterUser}    options={{ headerShown: true}}   />
+        {/* <Stack.Screen name="MainPage" component={MainPage}    options={{ headerShown: false}}   /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
