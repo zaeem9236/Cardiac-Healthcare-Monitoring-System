@@ -4,9 +4,11 @@ import { Input, Item, Label, Icon, Button, Heading, NativeBaseProvider } from "n
 
 import SlidingElement from '../NativeBase/SlidingElement';
 import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
 
 
-export default function RegisterUser() {
+
+export default function RegisterUser({navigation}) {
     let [register, setRegister] = useState(
         {
             name: '',
@@ -22,7 +24,7 @@ export default function RegisterUser() {
             <Item floatingLabel style={Styles.inputFieldName} >
                 <Label>Name</Label>
                 <Input
-                    onChangeText={(name) => {setRegister({ ...register, name: name })}}
+                    onChangeText={(name) => { setRegister({ ...register, name: name }) }}
                     value={register.name}
                     // placeholder='Email'
                     keyboardType='default'
@@ -34,7 +36,7 @@ export default function RegisterUser() {
             <Item floatingLabel style={Styles.inputFieldEmail} >
                 <Label>Email</Label>
                 <Input
-                    onChangeText={(email) => {setRegister({ ...register, email: email })} }
+                    onChangeText={(email) => { setRegister({ ...register, email: email }) }}
                     value={register.email}
                     // placeholder='Email'
                     keyboardType='default'
@@ -46,7 +48,7 @@ export default function RegisterUser() {
             <Item floatingLabel style={Styles.inputFieldContact} >
                 <Label>Contact</Label>
                 <Input
-                    onChangeText={(contact) => { setRegister({ ...register, contact: contact })}}
+                    onChangeText={(contact) => { setRegister({ ...register, contact: contact }) }}
                     value={register.contact}
                     // placeholder='Email'
                     keyboardType='default'
@@ -58,7 +60,7 @@ export default function RegisterUser() {
             <Item floatingLabel style={Styles.inputFieldPassword} >
                 <Label>Password</Label>
                 <Input
-                    onChangeText={(pass) => {setRegister({ ...register, password: pass })} }
+                    onChangeText={(pass) => { setRegister({ ...register, password: pass }) }}
                     value={register.password}
                     // placeholder='Email'
                     keyboardType='default'
@@ -71,7 +73,7 @@ export default function RegisterUser() {
             <Item floatingLabel style={Styles.inputFieldC_Password} >
                 <Label>Confirm Password</Label>
                 <Input
-                    onChangeText={(c_pass) => {setRegister({ ...register, c_password: c_pass })} }
+                    onChangeText={(c_pass) => { setRegister({ ...register, c_password: c_pass }) }}
                     value={register.c_password}
                     // placeholder='Email'
                     keyboardType='default'
@@ -84,13 +86,22 @@ export default function RegisterUser() {
             <View style={Styles.bottomView} >
                 <View style={Styles.registerButtonView} >
                     <Button style={Styles.registerButton} onPress={() => {
-                        Toast.show({
-                            type: 'success',
-                            position: 'top',
-                            text1: 'User Registered successfully',
-                            onPress: () => { Toast.hide() }
-                        });
+                        
                         // auth().signOut().then(() => { }).catch(() => { });
+                        
+                        if (register.email !== '' && register.password !== '')
+                            auth().createUserWithEmailAndPassword(register.email, register.password)
+                                .then(function (firebaseUser) {
+                                    Toast.show({
+                                        type: 'success',
+                                        position: 'top',
+                                        text1: 'User Registered successfully',
+                                        onPress: () => { Toast.hide() }
+                                    });
+                                    navigation.replace('MainPage')
+                                }).catch(function (error) {
+                                    //   alert(error)
+                                });
                     }}>
                         <Text style={Styles.registerButtonText}>Register</Text>
                     </Button>
