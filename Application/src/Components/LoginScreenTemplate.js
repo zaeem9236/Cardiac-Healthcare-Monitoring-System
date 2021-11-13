@@ -28,7 +28,7 @@ export default function LoginScreenTemplate({ navigation }) {
                 <ImageBackground style={keyboardOpen === true ? Styles.topViewHide : Styles.topView} imageStyle={{ borderBottomLeftRadius: 3, borderBottomRightRadius: 3 }} source={require('../Assets/loginBackground.png')} >
                     <View style={Styles.brandView}>
                         <SvgIconFunction icon='healthCare' size={'22' * Dimensions.get('window').scale} />
-                        <View><Text style={Styles.brandText}>Helthcare Monitoring System #2bae66</Text></View>
+                        <View><Text style={Styles.brandText}>Helthcare Monitoring System</Text></View>
                     </View>
                 </ImageBackground>
             {/* </Animatable.View> */}

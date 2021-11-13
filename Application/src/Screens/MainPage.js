@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Alert, Dimensions, ScrollView, StatusBar } from 'react-native';
 import { Button, Input, useColorModeValue, } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,8 @@ import { Footer, FooterTab } from 'native-base';
 import Tabs from '../NativeBase/Tabs';
 import SvgIconFunction from '../Functions/SvgIconFunction';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+
 
 
 
@@ -16,9 +18,38 @@ import Toast from 'react-native-toast-message';
 
 
 
-export default function MainPage({navigation}) {
+export default function MainPage({ navigation }) {
 
     let currentTab = useSelector(getTabNumber);
+    let [deviceData, setDeviceData] = useState({
+        Oxygen_Level: '-',
+        body_temp: '-',
+        ecg: '-',
+        myBPM: '-'
+    });
+
+    let [dataset, setDataSet] = useState([{
+        Oxygen_Level: '',
+        body_temp: '',
+        ecg: '',
+        myBPM: '',
+        name: '',
+        patient_id: '',
+        time: ''
+    }])
+    useEffect(() => {
+        database()
+            .ref('/deviceData/')
+            .on('value', snapshot => {
+                setDeviceData(snapshot.val())
+            });
+
+        database()
+            .ref('/dataset/')
+            .on('value', snapshot => {
+                setDataSet(snapshot.val())
+            });
+    }, []);
 
     if (currentTab === '1')
 
@@ -29,22 +60,82 @@ export default function MainPage({navigation}) {
                     backgroundColor="#2bae66"
                 />
                 <View style={Styles.bodyContainer}>
-                    <Text>home</Text>
-                    <View style={Styles.tempView}>
+                    {/* <Text>home</Text> */}
+                    {/* <View style={Styles.tempView}>
                         <SvgIconFunction icon='temperature' size={'32'} />
                         <Text style={Styles.tempText}>32° C</Text>
+                    </View> */}
+
+                    <View style={Styles.statusView}>
+                        {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
+                        {/* <Text>Status: Online</Text> */}
+                        <Text style={Styles.statusViewText}>{`Temperature: ${deviceData.body_temp}`}</Text>
                     </View>
 
                     <View style={Styles.statusView}>
-                        <SvgIconFunction icon='status' size={'32'} color='green' />
-                        <Text>Status: Online</Text>
+                        {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
+                        {/* <Text>Status: Online</Text> */}
+                        <Text style={Styles.statusViewText}>{`Oxygen: ${deviceData.Oxygen_Level}`}</Text>
+                    </View>
+
+                    <View style={Styles.statusView}>
+                        {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
+                        {/* <Text>Status: Online</Text> */}
+                        <Text style={Styles.statusViewText}>{`Ecg: ${deviceData.ecg}`}</Text>
+                    </View>
+
+                    <View style={Styles.statusView}>
+                        {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
+                        {/* <Text>Status: Online</Text> */}
+                        <Text style={Styles.statusViewText}>{`Bpm: ${deviceData.myBPM}`}</Text>
                     </View>
 
                     <View style={Styles.buttonView}>
                         <Button onPress={() => {
-                            alert('record reading from db')
+                            let arr = [];
+                            // alert('record reading from db')
+                            // database().ref('/dataset/').set([{
+                            //     Oxygen_Level: '-',
+                            //     body_temp: '-',
+                            //     ecg: '-',
+                            //     myBPM: '-'
+                            // }])
+                            database()
+                                .ref('/dataset/')
+                                .once('value')
+                                .then(snapshot => {
+                                    arr = snapshot.val();
+                                    database()
+                                        .ref('/deviceData/')
+                                        .once('value')
+                                        .then(snapshot => {
+                                            // arr.push(snapshot.val)
+                                            auth().onAuthStateChanged((info) => {
+                                                console.log('- - -  -')
+                                                console.log(info.uid)
+                                                database()
+                                                    .ref('/users/' + info.uid + '/name/')
+                                                    .once('value')
+                                                    .then(nameSnap => {
+                                                        arr.push({ ...snapshot.val(), time: `${new Date()}`, name: nameSnap.val(), patient_id: arr.length })
+                                                        database().ref('/dataset').set(arr)
+
+                                                        Toast.show({
+                                                            type: 'success',
+                                                            position: 'top',
+                                                            text1: 'Sample recorded successfully',
+                                                            onPress: () => { Toast.hide() }
+                                                        });
+
+                                                    });
+                                            })
+
+                                        });
+
+                                });
+
                         }} style={Styles.button}>
-                            <Text style={Styles.buttonText}>analyze health</Text>
+                            <Text style={Styles.buttonText}>Record Sample</Text>
                         </Button>
                     </View>
 
@@ -64,7 +155,20 @@ export default function MainPage({navigation}) {
                     backgroundColor="#2bae66"
                 />
                 <ScrollView style={Styles.bodyContainer}>
-                    <Text>2</Text>
+                    <View>
+                        {dataset.map(function (val, index) {
+                            return (
+                                <View style={Styles.recordView} key={index}>
+                                    <Text style={Styles.record}>{`Patient id: ${val.patient_id}`}</Text>
+                                    <Text style={Styles.record}>{`Name: ${val.name}`}</Text>
+                                    <Text style={Styles.record}>{`Oxygen: ${val.Oxygen_Level}`}</Text>
+                                    <Text style={Styles.record}>{`Temperature: ${val.body_temp}`}</Text>
+                                    <Text style={Styles.record}>{`ECG: ${val.ecg}`}</Text>
+                                    <Text style={Styles.record}>{`BPM: ${val.myBPM}`}</Text>
+                                </View>
+                            );
+                        })}
+                    </View>
                 </ScrollView>
 
 
@@ -83,15 +187,13 @@ export default function MainPage({navigation}) {
                 <View style={Styles.bodyContainer}>
                     {/* <Text>Settings</Text> */}
 
-                    <View style={Styles.settingView}>
-                        {/* <Text>Temperature Alert</Text> */}
+                    {/* <View style={Styles.settingView}>
                         <SlidingElement minValue={20} maxValue={50} text={'Temperature'} />
-                    </View>
+                    </View> */}
 
-                    <View style={Styles.settingView}>
-                        {/* <Text>Records Samples</Text> */}
+                    {/* <View style={Styles.settingView}>
                         <SlidingElement minValue={5} maxValue={15} text={'Records Samples'} />
-                    </View>
+                    </View> */}
 
                     <View style={Styles.settingView}>
                         <View style={Styles.signoutView}>
@@ -102,7 +204,7 @@ export default function MainPage({navigation}) {
                                     text1: 'Signout successfully',
                                     onPress: () => { Toast.hide() }
                                 });
-                                auth().signOut().then(() => { navigation.replace('LoginPage') }).catch(()=>{});
+                                auth().signOut().then(() => { navigation.replace('LoginPage') }).catch(() => { });
                             }}>
                                 <Text style={Styles.signoutButtonText}>Signout</Text>
                             </Button>
@@ -133,6 +235,19 @@ const Styles = StyleSheet.create({
         flex: 0.9,
         backgroundColor: '#F0F8FF'
     },
+    recordView: {
+        backgroundColor: 'rgba(143,174,102,0.2)',
+        borderBottomWidth: 2,
+        borderBottomColor: 'rgba(143,174,102,0.6)',
+        flex: 0.1,
+        // alignItems: 'center',
+        paddingLeft: Dimensions.get('screen').width * 0.05,
+        marginBottom: Dimensions.get('screen').width * 0.05,
+        justifyContent: 'center'
+    },
+    record: {
+        fontSize: Dimensions.get('screen').width * 0.05
+    },
     footerContainer: {
         display: 'flex',
         flex: 0.1
@@ -159,12 +274,17 @@ const Styles = StyleSheet.create({
 
     /* Status View styling */
     statusView: {
-        backgroundColor: 'pink',
-        flex: 0.4,
+        backgroundColor: 'rgba(43,174,102,0.2)',
+        borderBottomWidth: 2,
+        borderBottomColor: '#2bae66',
+        flex: 0.2,
         alignItems: 'center',
         justifyContent: 'center'
     },
-
+    statusViewText: {
+        fontSize: Dimensions.get('screen').width * 0.08,
+        color: 'rgba(0,0,0,0.6)'
+    },
     /* button View styling */
     buttonView: {
         // backgroundColor: 'blue',
@@ -213,7 +333,7 @@ const Styles = StyleSheet.create({
 
     },
 
-    signoutButton:{
+    signoutButton: {
         backgroundColor: '#ff6666',
         width: Dimensions.get('screen').width * 0.5,
         height: Dimensions.get('screen').height * 0.09,

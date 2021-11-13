@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { StyleSheet, View, Text, Alert, Dimensions } from 'react-native';
 import { Input, Item, Label, Icon, Button, Heading, NativeBaseProvider } from "native-base"
 
 import SlidingElement from '../NativeBase/SlidingElement';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+
 
 
 
@@ -98,7 +100,11 @@ export default function RegisterUser({navigation}) {
                                         text1: 'User Registered successfully',
                                         onPress: () => { Toast.hide() }
                                     });
-                                    navigation.replace('MainPage')
+                                    navigation.replace('MainPage');
+                                    database().ref('/users/' + `${firebaseUser.user.uid}`).set(register)
+                                    .then((data) => {
+                                        // Alert.alert('job posted successfully')
+                                    })
                                 }).catch(function (error) {
                                     //   alert(error)
                                 });
