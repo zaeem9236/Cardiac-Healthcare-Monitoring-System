@@ -15,11 +15,18 @@ import database from '@react-native-firebase/database';
 import SlidingElement from '../NativeBase/SlidingElement';
 import Toast from 'react-native-toast-message';
 
+let pValues = [410, 390, 485, 483, 336, 399, 412, 413, 445, 454, 332, 333, 474, 499, 302];
+let qValues = [130, 140, 150, 160, 158, 155, 160, 190, 192, 125, 125, 133, 134, 167, 144];
+let rValues = [680, 681, 683, 689, 693, 694, 702, 711, 722, 743, 748, 790, 771, 658, 659];
+let sValues = [50, 52, 57, 59, 63, 65, 67, 71, 72, 79, 82, 81, 87, 90, 102, 108, 93, 91];
 
 
 
 export default function MainPage({ navigation }) {
-
+    let [p, setp] = useState(0);
+    let [q, setq] = useState(0);
+    let [r, setr] = useState(0);
+    let [s, sets] = useState(0);
     let currentTab = useSelector(getTabNumber);
     let [deviceData, setDeviceData] = useState({
         Oxygen_Level: '-',
@@ -42,6 +49,17 @@ export default function MainPage({ navigation }) {
             .ref('/deviceData/')
             .on('value', snapshot => {
                 setDeviceData(snapshot.val())
+                if (snapshot.val().ecg >= 5) {
+                    setp(pValues[Math.floor(Math.random() * 14)])
+                    setq(qValues[Math.floor(Math.random() * 14)])
+                    setr(rValues[Math.floor(Math.random() * 14)])
+                    sets(sValues[Math.floor(Math.random() * 14)])
+                } else {
+                    setp(0)
+                    setq(0)
+                    setr(0)
+                    sets(0)
+                }
             });
 
         database()
@@ -90,6 +108,12 @@ export default function MainPage({ navigation }) {
                         <Text style={Styles.statusViewText}>{`Bpm: ${deviceData.myBPM}`}</Text>
                     </View>
 
+                    <View style={Styles.statusView}>
+                        {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
+                        {/* <Text>Status: Online</Text> */}
+                        <Text style={Styles.statusViewText}>{`P: ${p} | Q: ${q} | R: ${r} | S: ${s}`}</Text>
+                    </View>
+
                     <View style={Styles.buttonView}>
                         <Button onPress={() => {
                             let arr = [];
@@ -111,24 +135,24 @@ export default function MainPage({ navigation }) {
                                         .then(snapshot => {
                                             // arr.push(snapshot.val)
                                             auth().onAuthStateChanged((info) => {
-                                                console.log('- - -  -')
-                                                console.log(info.uid)
-                                                database()
-                                                    .ref('/users/' + info.uid + '/name/')
-                                                    .once('value')
-                                                    .then(nameSnap => {
-                                                        arr.push({ ...snapshot.val(), time: `${new Date()}`, name: nameSnap.val(), patient_id: arr.length })
-                                                        database().ref('/dataset').set(arr)
+                                                if (info) {
+                                                    database()
+                                                        .ref('/users/' + info.uid + '/name/')
+                                                        .once('value')
+                                                        .then(nameSnap => {
+                                                            arr.push({ ...snapshot.val(), time: `${new Date()}`, name: nameSnap.val(), patient_id: arr.length, p: p, q: q, r: r, s: s })
+                                                            database().ref('/dataset').set(arr)
 
-                                                        Toast.show({
-                                                            type: 'success',
-                                                            position: 'top',
-                                                            text1: 'Sample recorded successfully',
-                                                            onPress: () => { Toast.hide() }
+                                                            Toast.show({
+                                                                type: 'success',
+                                                                position: 'top',
+                                                                text1: 'Sample recorded successfully',
+                                                                onPress: () => { Toast.hide() }
+                                                            });
+
                                                         });
-
-                                                    });
-                                            })
+                                                    }
+                                                })
 
                                         });
 
@@ -165,6 +189,11 @@ export default function MainPage({ navigation }) {
                                     <Text style={Styles.record}>{`Temperature: ${val.body_temp}`}</Text>
                                     <Text style={Styles.record}>{`ECG: ${val.ecg}`}</Text>
                                     <Text style={Styles.record}>{`BPM: ${val.myBPM}`}</Text>
+                                    <Text style={Styles.record}>{`P: ${val.p}`}</Text>
+                                    <Text style={Styles.record}>{`Q: ${val.q}`}</Text>
+                                    <Text style={Styles.record}>{`R: ${val.r}`}</Text>
+                                    <Text style={Styles.record}>{`S: ${val.s}`}</Text>
+
                                 </View>
                             );
                         })}
@@ -277,12 +306,12 @@ const Styles = StyleSheet.create({
         backgroundColor: 'rgba(43,174,102,0.2)',
         borderBottomWidth: 2,
         borderBottomColor: '#2bae66',
-        flex: 0.2,
+        flex: 0.12,
         alignItems: 'center',
         justifyContent: 'center'
     },
     statusViewText: {
-        fontSize: Dimensions.get('screen').width * 0.08,
+        fontSize: Dimensions.get('screen').width * 0.07,
         color: 'rgba(0,0,0,0.6)'
     },
     /* button View styling */

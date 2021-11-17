@@ -11,7 +11,7 @@ import LoginUser from '../Functions/LoginUser';
 
 
 export default function LoginScreenTemplate({ navigation }) {
-    let [credentials, setCredentials] = useState({ email: 'nayabssanam8@gmail.com', password: 'sanam@441' });
+    let [credentials, setCredentials] = useState({ email: '', password: '' });
     let [keyboardOpen, setKeyboardOpen] = useState(false);
 
     useEffect(() => {
