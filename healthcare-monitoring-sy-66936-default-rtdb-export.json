@@ -1,0 +1,123 @@
+{
+  "dataset" : [ {
+    "Oxygen_Level" : 96,
+    "body_temp" : 37.5,
+    "ecg" : 4,
+    "myBPM" : 73,
+    "name" : "Sanam",
+    "p" : 0,
+    "patient_id" : 0,
+    "q" : 0,
+    "r" : 0,
+    "s" : 0,
+    "time" : "Sat Nov 13 2021 22:56:34 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 4,
+    "myBPM" : 81.50214,
+    "name" : "Zaeem",
+    "p" : 0,
+    "patient_id" : 1,
+    "q" : 0,
+    "r" : 0,
+    "s" : 0,
+    "time" : "Wed Nov 17 2021 00:59:19 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 296,
+    "myBPM" : 81.50214,
+    "name" : "Zaeem",
+    "p" : 332,
+    "patient_id" : 2,
+    "q" : 125,
+    "r" : 748,
+    "s" : 67,
+    "time" : "Wed Nov 17 2021 02:17:34 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 296,
+    "myBPM" : 81.50214,
+    "name" : "Sanam",
+    "p" : 332,
+    "patient_id" : 3,
+    "q" : 158,
+    "r" : 694,
+    "s" : 50,
+    "time" : "Thu Nov 18 2021 01:11:36 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 296,
+    "myBPM" : 81.50214,
+    "name" : "Sanam",
+    "p" : 499,
+    "patient_id" : 4,
+    "q" : 140,
+    "r" : 722,
+    "s" : 87,
+    "time" : "Fri Nov 19 2021 00:16:06 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 98,
+    "body_temp" : 19,
+    "ecg" : 296,
+    "myBPM" : 70.08768,
+    "name" : "Sanam",
+    "p" : 499,
+    "patient_id" : 5,
+    "q" : 160,
+    "r" : 681,
+    "s" : 72,
+    "time" : "Sun Nov 21 2021 13:26:02 GMT+0500 (PKT)"
+  }, {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 8,
+    "myBPM" : 32.99459,
+    "name" : "Azhar",
+    "p" : 399,
+    "patient_id" : 6,
+    "q" : 125,
+    "r" : 722,
+    "s" : 87,
+    "time" : "Sun Nov 21 2021 16:36:28 GMT+0500 (PKT)"
+  } ],
+  "deviceData" : {
+    "Oxygen_Level" : 97,
+    "body_temp" : 19,
+    "ecg" : 8,
+    "myBPM" : 32.99459
+  },
+  "users" : {
+    "FD58LIYQ20fvVlAgzhThzH77Fvj2" : {
+      "c_password" : "yahoomsc",
+      "contact" : "03085246181",
+      "email" : "azhar963876@gmail.com",
+      "name" : "Azhar",
+      "password" : "yahoomsc"
+    },
+    "SilaVQDMIpeYNpGdWoilz56otkm2" : {
+      "c_password" : "123456",
+      "contact" : "1111",
+      "email" : "zaeem123@live.com",
+      "name" : "Zaeem",
+      "password" : "123456"
+    },
+    "cKYRt8l7LuVlPx1fKaosVgUq4NN2" : {
+      "c_password" : "12345678",
+      "contact" : "03085146420",
+      "email" : "babarmajeed120@gmail.com",
+      "name" : "Babar majeed",
+      "password" : "123456789"
+    },
+    "gQj8OfP9g3ZVXbR7td6PCQghKYx2" : {
+      "c_password" : "sanam@441",
+      "contact" : "1234",
+      "email" : "Nayabssanam8@gmail.com",
+      "name" : "Sanam",
+      "password" : "sanam@441"
+    }
+  }
+}

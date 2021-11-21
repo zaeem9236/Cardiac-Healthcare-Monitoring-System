@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Alert, Dimensions, Keyboard } from 'react-native';
 import { Input, Item, Label, Icon, Button, Heading, NativeBaseProvider } from "native-base"
 
 import SlidingElement from '../NativeBase/SlidingElement';
@@ -10,7 +10,7 @@ import database from '@react-native-firebase/database';
 
 
 
-export default function RegisterUser({navigation}) {
+export default function RegisterUser({ navigation }) {
     let [register, setRegister] = useState(
         {
             name: '',
@@ -20,6 +20,13 @@ export default function RegisterUser({navigation}) {
             c_password: ''
         });
 
+
+    let [keyboardOpen, setKeyboardOpen] = useState(false);
+
+    useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', () => { console.log('show'); setKeyboardOpen(true) });
+        Keyboard.addListener('keyboardDidHide', () => { console.log('close'); setKeyboardOpen(false) });
+    }, []);
     return (
         <View style={Styles.inputFieldsView}>
 
@@ -87,10 +94,10 @@ export default function RegisterUser({navigation}) {
 
             <View style={Styles.bottomView} >
                 <View style={Styles.registerButtonView} >
-                    <Button style={Styles.registerButton} onPress={() => {
-                        
+                    <Button style={keyboardOpen===true ? Styles.registerButtonHide : Styles.registerButton} onPress={() => {
+
                         // auth().signOut().then(() => { }).catch(() => { });
-                        
+
                         if (register.email !== '' && register.password !== '')
                             auth().createUserWithEmailAndPassword(register.email, register.password)
                                 .then(function (firebaseUser) {
@@ -102,9 +109,9 @@ export default function RegisterUser({navigation}) {
                                     });
                                     navigation.replace('MainPage');
                                     database().ref('/users/' + `${firebaseUser.user.uid}`).set(register)
-                                    .then((data) => {
-                                        // Alert.alert('job posted successfully')
-                                    })
+                                        .then((data) => {
+                                            // Alert.alert('job posted successfully')
+                                        })
                                 }).catch(function (error) {
                                     //   alert(error)
                                 });
@@ -184,7 +191,9 @@ const Styles = StyleSheet.create({
         elevation: 0,
         justifyContent: 'center',
         transform: [{ translateY: Dimensions.get('screen').height * -0.1 }]
-
+    },
+    registerButtonHide:{
+        display: 'none'
     },
 
     registerButtonText: {

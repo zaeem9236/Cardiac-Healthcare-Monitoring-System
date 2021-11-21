@@ -185,8 +185,8 @@ export default function MainPage({ navigation }) {
                                 <View style={Styles.recordView} key={index}>
                                     <Text style={Styles.record}>{`Patient id: ${val.patient_id}`}</Text>
                                     <Text style={Styles.record}>{`Name: ${val.name}`}</Text>
-                                    <Text style={Styles.record}>{`Oxygen: ${val.Oxygen_Level}`}</Text>
-                                    <Text style={Styles.record}>{`Temperature: ${val.body_temp}`}</Text>
+                                    <Text style={val.Oxygen_Level >= 95 && val.Oxygen_Level <= 100   ? Styles.record: Styles.recordWithAlarm}>{`Oxygen: ${val.Oxygen_Level}`}</Text>
+                                    <Text style={val.body_temp >= 36.5 && val.body_temp <= 37.5   ? Styles.record: Styles.recordWithAlarm}>{`Temperature: ${val.body_temp}`}</Text>
                                     <Text style={Styles.record}>{`ECG: ${val.ecg}`}</Text>
                                     <Text style={Styles.record}>{`BPM: ${val.myBPM}`}</Text>
                                     <Text style={Styles.record}>{`P: ${val.p}`}</Text>
@@ -275,7 +275,13 @@ const Styles = StyleSheet.create({
         justifyContent: 'center'
     },
     record: {
-        fontSize: Dimensions.get('screen').width * 0.05
+        fontSize: Dimensions.get('screen').width * 0.05,
+        color: 'rgba(0, 0, 0, 1)'
+    },
+    recordWithAlarm: {
+        fontSize: Dimensions.get('screen').width * 0.05,
+        // backgroundColor: 'rgba(255, 0, 0, 0.3)'
+        color: 'rgba(255, 0, 0, 1)'
     },
     footerContainer: {
         display: 'flex',
@@ -337,7 +343,7 @@ const Styles = StyleSheet.create({
     /* button Text styling */
     buttonText: {
         color: '#2bae66',
-        fontSize: 10 * Dimensions.get('screen').scale * 1,
+        fontSize: 7 * Dimensions.get('screen').scale * 1,
     },
 
     /* setting View styling */
