@@ -113,7 +113,12 @@ export default function RegisterUser({ navigation }) {
                                             // Alert.alert('job posted successfully')
                                         })
                                 }).catch(function (error) {
-                                    //   alert(error)
+                                    Toast.show({
+                                        type: 'error',
+                                        position: 'top',
+                                        text1: 'Unable to register !',
+                                        onPress: () => { Toast.hide() }
+                                    });
                                 });
                     }}>
                         <Text style={Styles.registerButtonText}>Register</Text>

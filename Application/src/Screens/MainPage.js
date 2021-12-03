@@ -19,6 +19,7 @@ let pValues = [410, 390, 485, 483, 336, 399, 412, 413, 445, 454, 332, 333, 474, 
 let qValues = [130, 140, 150, 160, 158, 155, 160, 190, 192, 125, 125, 133, 134, 167, 144];
 let rValues = [680, 681, 683, 689, 693, 694, 702, 711, 722, 743, 748, 790, 771, 658, 659];
 let sValues = [50, 52, 57, 59, 63, 65, 67, 71, 72, 79, 82, 81, 87, 90, 102, 108, 93, 91];
+let tValues = [52, 54, 59, 60, 67, 69, 71, 75, 76, 83, 86, 85, 85, 96, 105, 110, 97, 95];
 
 
 
@@ -27,6 +28,7 @@ export default function MainPage({ navigation }) {
     let [q, setq] = useState(0);
     let [r, setr] = useState(0);
     let [s, sets] = useState(0);
+    let [t, sett] = useState(0);
     let currentTab = useSelector(getTabNumber);
     let [deviceData, setDeviceData] = useState({
         Oxygen_Level: '-',
@@ -49,16 +51,20 @@ export default function MainPage({ navigation }) {
             .ref('/deviceData/')
             .on('value', snapshot => {
                 setDeviceData(snapshot.val())
+                showAlarm(snapshot.val().body_temp, snapshot.val().Oxygen_Level, snapshot.val().myBPM)
+
                 if (snapshot.val().ecg >= 5) {
                     setp(pValues[Math.floor(Math.random() * 14)])
                     setq(qValues[Math.floor(Math.random() * 14)])
                     setr(rValues[Math.floor(Math.random() * 14)])
                     sets(sValues[Math.floor(Math.random() * 14)])
+                    sett(tValues[Math.floor(Math.random() * 14)])
                 } else {
                     setp(0)
                     setq(0)
                     setr(0)
                     sets(0)
+                    sett(0)
                 }
             });
 
@@ -87,31 +93,31 @@ export default function MainPage({ navigation }) {
                     <View style={Styles.statusView}>
                         {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
                         {/* <Text>Status: Online</Text> */}
-                        <Text style={Styles.statusViewText}>{`Temperature: ${deviceData.body_temp}`}</Text>
+                        <Text style={Styles.statusViewText}>{`Temperature: ${`${deviceData.body_temp == 0 ? 'detached' : deviceData.body_temp}`}`}</Text>
                     </View>
 
                     <View style={Styles.statusView}>
                         {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
                         {/* <Text>Status: Online</Text> */}
-                        <Text style={Styles.statusViewText}>{`Oxygen: ${deviceData.Oxygen_Level}`}</Text>
+                        <Text style={Styles.statusViewText}>{`Oxygen: ${`${deviceData.Oxygen_Level == 0 ? 'detached' : deviceData.Oxygen_Level}`}`}</Text>
                     </View>
 
                     <View style={Styles.statusView}>
                         {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
                         {/* <Text>Status: Online</Text> */}
-                        <Text style={Styles.statusViewText}>{`Ecg: ${deviceData.ecg}`}</Text>
+                        <Text style={Styles.statusViewText}>{`Ecg: ${`${deviceData.ecg == 0 ? 'detached' : deviceData.ecg}`}`}</Text>
                     </View>
 
                     <View style={Styles.statusView}>
                         {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
                         {/* <Text>Status: Online</Text> */}
-                        <Text style={Styles.statusViewText}>{`Bpm: ${deviceData.myBPM}`}</Text>
+                        <Text style={Styles.statusViewText}>{`Bpm: ${`${deviceData.myBPM == 0 ? 'detached' : deviceData.myBPM}`}`}</Text>
                     </View>
 
                     <View style={Styles.statusView}>
                         {/* <SvgIconFunction icon='status' size={'32'} color='green' /> */}
                         {/* <Text>Status: Online</Text> */}
-                        <Text style={Styles.statusViewText}>{`P: ${p} | Q: ${q} | R: ${r} | S: ${s}`}</Text>
+                        <Text style={{ fontSize: Dimensions.get('screen').width * 0.05, color: 'rgba(0,0,0,0.6)' }}>{`P: ${p} | Q: ${q} | R: ${r} | S: ${s} | T: ${t} `}</Text>
                     </View>
 
                     <View style={Styles.buttonView}>
@@ -133,14 +139,14 @@ export default function MainPage({ navigation }) {
                                         .ref('/deviceData/')
                                         .once('value')
                                         .then(snapshot => {
-                                            // arr.push(snapshot.val)
+
                                             auth().onAuthStateChanged((info) => {
                                                 if (info) {
                                                     database()
                                                         .ref('/users/' + info.uid + '/name/')
                                                         .once('value')
                                                         .then(nameSnap => {
-                                                            arr.push({ ...snapshot.val(), time: `${new Date()}`, name: nameSnap.val(), patient_id: arr.length, p: p, q: q, r: r, s: s })
+                                                            arr.push({ ...snapshot.val(), time: `${new Date()}`, name: nameSnap.val(), patient_id: arr.length, p: p, q: q, r: r, s: s, t: t })
                                                             database().ref('/dataset').set(arr)
 
                                                             Toast.show({
@@ -151,8 +157,8 @@ export default function MainPage({ navigation }) {
                                                             });
 
                                                         });
-                                                    }
-                                                })
+                                                }
+                                            })
 
                                         });
 
@@ -185,14 +191,15 @@ export default function MainPage({ navigation }) {
                                 <View style={Styles.recordView} key={index}>
                                     <Text style={Styles.record}>{`Patient id: ${val.patient_id}`}</Text>
                                     <Text style={Styles.record}>{`Name: ${val.name}`}</Text>
-                                    <Text style={val.Oxygen_Level >= 95 && val.Oxygen_Level <= 100   ? Styles.record: Styles.recordWithAlarm}>{`Oxygen: ${val.Oxygen_Level}`}</Text>
-                                    <Text style={val.body_temp >= 36.5 && val.body_temp <= 37.5   ? Styles.record: Styles.recordWithAlarm}>{`Temperature: ${val.body_temp}`}</Text>
+                                    <Text style={val.Oxygen_Level >= 95 && val.Oxygen_Level <= 100 ? Styles.record : Styles.recordWithAlarm}>{`Oxygen: ${val.Oxygen_Level}`}</Text>
+                                    <Text style={val.body_temp >= 36.5 && val.body_temp <= 37.5 ? Styles.record : Styles.recordWithAlarm}>{`Temperature: ${val.body_temp}`}</Text>
                                     <Text style={Styles.record}>{`ECG: ${val.ecg}`}</Text>
-                                    <Text style={Styles.record}>{`BPM: ${val.myBPM}`}</Text>
+                                    <Text style={val.myBPM >= 60 && val.myBPM <= 100 ? Styles.record : Styles.recordWithAlarm}>{`BPM: ${val.myBPM}`}</Text>
                                     <Text style={Styles.record}>{`P: ${val.p}`}</Text>
                                     <Text style={Styles.record}>{`Q: ${val.q}`}</Text>
                                     <Text style={Styles.record}>{`R: ${val.r}`}</Text>
                                     <Text style={Styles.record}>{`S: ${val.s}`}</Text>
+                                    <Text style={Styles.record}>{`T: ${val.t}`}</Text>
 
                                 </View>
                             );
@@ -281,7 +288,8 @@ const Styles = StyleSheet.create({
     recordWithAlarm: {
         fontSize: Dimensions.get('screen').width * 0.05,
         // backgroundColor: 'rgba(255, 0, 0, 0.3)'
-        color: 'rgba(255, 0, 0, 1)'
+        // color: 'rgba(255, 0, 0, 1)'
+        color: 'orange'
     },
     footerContainer: {
         display: 'flex',
@@ -317,7 +325,7 @@ const Styles = StyleSheet.create({
         justifyContent: 'center'
     },
     statusViewText: {
-        fontSize: Dimensions.get('screen').width * 0.07,
+        fontSize: Dimensions.get('screen').width * 0.065,
         color: 'rgba(0,0,0,0.6)'
     },
     /* button View styling */
@@ -385,3 +393,13 @@ const Styles = StyleSheet.create({
 
 
 });
+
+
+function showAlarm(temp, oxygen, bpm) {
+    if (!(temp >= 36.5 && temp <= 37.5) || !(oxygen >= 95 && oxygen <= 100) || !(bpm >= 60 && bpm <= 100)) {
+        Alert.alert('Alert', ` ${(temp >= 36.5 && temp <= 37.5) ? `` : `Temperature Alert!,  Temp=${temp}\r\n`}
+    ${(oxygen >= 95 && oxygen <= 100) ? `` : `Oxygen Alert!,  Oxygen=${oxygen}\r\n`}
+    ${(bpm >= 60 && bpm <= 100) ? `` : `Bpm Alert!,  Bpm=${bpm}`}
+    `)
+    }
+}
