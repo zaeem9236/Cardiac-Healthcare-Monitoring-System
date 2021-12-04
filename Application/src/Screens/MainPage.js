@@ -50,8 +50,11 @@ export default function MainPage({ navigation }) {
         database()
             .ref('/deviceData/')
             .on('value', snapshot => {
+                
+                    if (!(snapshot.val().body_temp >= 36.5 && snapshot.val().body_temp <= 37.5) || !(snapshot.val().Oxygen_Level >= 95 && snapshot.val().Oxygen_Level <= 100) || !(snapshot.val().myBPM >= 60 && snapshot.val().myBPM <= 100)) {
+                        showAlarm(snapshot.val().body_temp, snapshot.val().Oxygen_Level, snapshot.val().myBPM)
+                    }
                 setDeviceData(snapshot.val())
-                showAlarm(snapshot.val().body_temp, snapshot.val().Oxygen_Level, snapshot.val().myBPM)
 
                 if (snapshot.val().ecg >= 5) {
                     setp(pValues[Math.floor(Math.random() * 14)])
