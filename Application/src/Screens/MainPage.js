@@ -399,10 +399,10 @@ const Styles = StyleSheet.create({
 
 
 function showAlarm(temp, oxygen, bpm) {
-    if (!(temp <= 37.5) || !(oxygen <= 100) || !(bpm <= 100)) {
+    if ((temp >= 37.5) || (oxygen <= 94) || (bpm < 60 || bpm > 100)) {
         Alert.alert('Alert', ` ${(temp <= 37.5) ? `` : `Temperature Alert!,  Temp=${temp}\r\n`}
-    ${(oxygen <= 100) ? `` : `Oxygen Alert!,  Oxygen=${oxygen}\r\n`}
-    ${(bpm <= 100) ? `` : `Bpm Alert!,  Bpm=${bpm}`}
+    ${!(oxygen <= 94) ? `` : `Oxygen Alert!,  Oxygen=${oxygen}\r\n`}
+    ${!(bpm < 60 || bpm > 100) ? `` : `Bpm Alert!,  Bpm=${bpm}`}
     `)
     }
 }
